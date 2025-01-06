@@ -1,11 +1,9 @@
-ARG IMAGE=robotastic/trunk-recorder:latest
+FROM robotastic/trunk-recorder:latest
 
-FROM ${IMAGE}
+# Update and install dependencies
+RUN apt update && export DEBIAN_FRONTEND=noninteractive && \
+    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3 libpaho-mqttpp-dev libpaho-mqttpp3-1 cmake
 
-# Build MQTT Stats
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && \ 
-    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3  libpaho-mqttpp-dev libpaho-mqttpp3-1  && rm -rf /var/lib/apt/lists/* cmake
-    
 WORKDIR /src/trunk-recorder-mqtt-status
 
 COPY . .
@@ -13,5 +11,3 @@ COPY . .
 WORKDIR /src/trunk-recorder-mqtt-status/build
 
 RUN cmake .. && make install
-
-WORKDIR /app
