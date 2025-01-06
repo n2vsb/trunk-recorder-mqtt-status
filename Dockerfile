@@ -4,7 +4,7 @@ FROM ${IMAGE}
 
 # Build MQTT Stats
 RUN apt update && export DEBIAN_FRONTEND=noninteractive && \ 
-    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3  libpaho-mqttpp-dev libpaho-mqttpp3-1  && rm -rf /var/lib/apt/lists/*
+    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3  libpaho-mqttpp-dev libpaho-mqttpp3-1  && rm -rf /var/lib/apt/lists/* cmake
     
 WORKDIR /src/trunk-recorder-mqtt-status
 
