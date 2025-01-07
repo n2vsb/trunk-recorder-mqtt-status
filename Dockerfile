@@ -1,14 +1,11 @@
-FROM robotastic/trunk-recorder:latest
+ARG IMAGE=robotastic/trunk-recorder:latest
 
-# Update and install required packages
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && \
-    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3 libpaho-mqttpp-dev libpaho-mqttpp3-1 \
-    build-essential wget software-properties-common cmake libssl-dev gnuradio-dev
+FROM ${IMAGE}
 
-# Download nlohmann/json
-RUN mkdir -p /usr/local/include && \
-    wget https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp -O /usr/local/include/json.hpp
-
+# Build MQTT Stats
+RUN apt update && export DEBIAN_FRONTEND=noninteractive && \ 
+    apt install -y libpaho-mqtt-dev libpaho-mqtt1.3  libpaho-mqttpp-dev libpaho-mqttpp3-1  && rm -rf /var/lib/apt/lists/*
+    
 WORKDIR /src/trunk-recorder-mqtt-status
 
 COPY . .
@@ -16,3 +13,5 @@ COPY . .
 WORKDIR /src/trunk-recorder-mqtt-status/build
 
 RUN cmake .. && make install
+
+WORKDIR /app
